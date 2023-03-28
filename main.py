@@ -2,7 +2,7 @@ from trainer import Trainer
 import gymnasium as gym
 
 if __name__ == "__main__":
-    env = gym.make("CartPole-v1", render_mode='rgb_array')
+    env = gym.make("MountainCar-v0", render_mode='rgb_array')
     param_dict = {
         'policy_net_neurons': [4, 16, 32, 64, 64, 16, 2],
         'target_net_neurons': [4, 16, 32, 64, 64, 16, 2],
@@ -10,7 +10,7 @@ if __name__ == "__main__":
         'epsilon_decay': 1E-4,
         'batch_size': 32,
         'num_episodes': 500,
-        'update_target_every': 1,
+        'update_target_every': 10,
         'ddqn': False,
         'learning_rate': 0.001
     }
