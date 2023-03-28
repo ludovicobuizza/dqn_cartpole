@@ -5,7 +5,6 @@ import torch
 from dqn import DQN
 
 
-
 def greedy_action(dqn: DQN, state: torch.Tensor) -> int:
     """Select action according to a given DQN
     
@@ -72,7 +71,10 @@ def loss(policy_dqn: DQN, target_dqn: DQN,
     """
     if ddqn:
         best_action_index = torch.argmax(policy_dqn(states), 1).reshape(-1, 1)
-        bellman_targets = (~dones).reshape(-1) * (target_dqn(next_states).gather(1, best_action_index)).reshape(-1) + rewards.reshape(-1)
+        bellman_targets = (~dones).reshape(-1) * \
+                          (target_dqn(next_states).gather(1,
+                                                          best_action_index)).\
+                              reshape(-1) + rewards.reshape(-1)
     else:
         bellman_targets = (~dones).reshape(-1) * (target_dqn(next_states)).max(
             1).values + rewards.reshape(-1)
