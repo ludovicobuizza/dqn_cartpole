@@ -1,7 +1,9 @@
 import random
 import torch
 from dqn import DQN
-
+import matplotlib.pyplot as plt
+from typing import List
+import numpy as np
 
 def epsilon_greedy(epsilon: float, dqn: DQN, state: torch.Tensor) -> int:
     """Sample an epsilon-greedy action according to a given DQN
@@ -66,3 +68,20 @@ def loss(policy_dqn: DQN, target_dqn: DQN,
     q_values = policy_dqn(states).gather(1, actions).reshape(-1)
     return ((q_values - bellman_targets) ** 2).mean()
 
+def plot_average_durations(durations: List[List[int]]):
+    """Get average and std of durations and plot them.
+    """
+    durations = np.array(durations)
+    means = np.mean(durations, axis=0)
+    stds = np.std(durations, axis=0)
+    smoothed_means = np.convolve(means, np.ones(10) / 10, mode='valid')
+    smoothed_stds = np.convolve(stds, np.ones(10) / 10, mode='valid')
+    plt.clf()
+    plt.plot(smoothed_means)
+    plt.fill_between(np.arange(len(smoothed_means)),
+                        smoothed_means - smoothed_stds,
+                        smoothed_means + smoothed_stds,
+                        alpha=0.2)
+    plt.xlabel('Episode')
+    plt.ylabel('Duration')
+    plt.savefig('avg_durations.png')

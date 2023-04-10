@@ -1,10 +1,10 @@
 import torch.nn as nn
 import torch
 import torch.nn.functional as F
-
+from typing import List
 
 class DQN(nn.Module):
-    def __init__(self, layer_sizes: list[int]):
+    def __init__(self, layer_sizes: List[int]):
         """
         DQN initialisation
 

@@ -58,7 +58,8 @@ class Trainer:
             if ep % self.update_target_every == 0:
                 update_target(self.target_net, self.policy_net)
             pbar.set_description(f"Episode {ep} - Average duration: {int(np.mean(self.episode_durations))}")
-            self.frames.append(ep_frames)
+            if ep == 0 or ep == self.num_episodes - 1:
+                self.frames.append(ep_frames)
 
     def plot_durations(self, filename: str = 'durations.png'):
         plt.figure()
